@@ -20,6 +20,7 @@ El servicio debe priorizar una experiencia rápida y comprensible, sin ejecutar 
 - [Proceso de levantamiento de requisitos](docs/proceso-levantamiento-requisitos.md)
 - [Guion de entrevistas](docs/entrevistas-usuarios.md)
 - [Validación del alcance del MVP](docs/validacion-alcance-mvp.md)
+- [Arquitectura técnica del MVP](docs/arquitectura-mvp.md)
 - [Catálogo inicial de requisitos](docs/catalogo-requisitos.md)
 - [Plan del proyecto](PLAN.md)
 - [Decisiones](DECISIONS.md)

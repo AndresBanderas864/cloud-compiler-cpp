@@ -35,3 +35,7 @@ La entrada estándar podrá enviarse durante la ejecución, no únicamente antes
 ## ADR-009: estimaciones de consumo
 
 Para dimensionar el prototipo se utilizarán como referencias 15–30 KB de tráfico por ejecución, 1.5 MB de carga inicial, 50–150 MB de RAM por compilación, aproximadamente 1 vCPU y 100–500 KB de almacenamiento temporal por trabajo. Son estimaciones, no garantías de capacidad.
+
+## ADR-010: arquitectura técnica inicial
+
+Se propone FastAPI, frontend estático con HTML/CSS/JavaScript, WebSocket para la terminal interactiva y Docker para cada sandbox efímero. La propuesta prioriza simplicidad, bajo costo y separación de responsabilidades; deberá validarse antes del despliegue.
