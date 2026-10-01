@@ -75,7 +75,7 @@ Esta separación permite cambiar Docker, el proveedor cloud o la interfaz sin me
 ## Riesgos y controles
 
 - Código malicioso: sandbox sin privilegios, sin red, con límites y eliminación obligatoria.
-- Binario ejecutable: el código fuente se monta como solo lectura y el binario se crea en un `tmpfs` efímero, que se elimina con el contenedor.
+- Binario ejecutable: el código fuente se monta como solo lectura y el binario se crea en un `tmpfs` efímero con ejecución habilitada, que se elimina con el contenedor.
 - Bucle infinito: timeout total y cancelación del proceso y sus descendientes.
 - Salida excesiva: truncamiento a 100 KB y estado explícito.
 - Cierre no detectado: TTL de seguridad en el backend.
