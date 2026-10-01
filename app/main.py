@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -81,7 +82,12 @@ async def run_socket(websocket: WebSocket) -> None:
     receiver = asyncio.create_task(receive_input())
     try:
         await status("iniciando")
-        await run_in_sandbox(request, output, input_queue, status)
+        if os.getenv("EXECUTION_BACKEND", "local") == "oci":
+            from .providers.oci_execution import run_via_oci
+
+            await run_via_oci(request, websocket)
+        else:
+            await run_in_sandbox(request, output, input_queue, status)
     except SandboxUnavailable as error:
         await send_error(websocket, "CC-901", str(error))
     except (WebSocketDisconnect, RuntimeError):

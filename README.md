@@ -21,6 +21,8 @@ El servicio debe priorizar una experiencia rápida y comprensible, sin ejecutar 
 - [Guion de entrevistas](docs/entrevistas-usuarios.md)
 - [Validación del alcance del MVP](docs/validacion-alcance-mvp.md)
 - [Arquitectura técnica del MVP](docs/arquitectura-mvp.md)
+- [Arquitectura PaaS con OCI](docs/arquitectura-oci.md)
+- [Despliegue en OCI](docs/despliegue-oci.md)
 - [Catálogo inicial de requisitos](docs/catalogo-requisitos.md)
 - [Plan del proyecto](PLAN.md)
 - [Decisiones](DECISIONS.md)

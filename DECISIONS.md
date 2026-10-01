@@ -39,3 +39,7 @@ Para dimensionar el prototipo se utilizarán como referencias 15–30 KB de trá
 ## ADR-010: arquitectura técnica inicial
 
 Se propone FastAPI, frontend estático con HTML/CSS/JavaScript, WebSocket para la terminal interactiva y Docker para cada sandbox efímero. La propuesta prioriza simplicidad, bajo costo y separación de responsabilidades; deberá validarse antes del despliegue.
+
+## ADR-011: migración a OCI Container Instances
+
+La arquitectura de producción usará OCI Container Instances para la aplicación web y para runners efímeros. El backend no creará contenedores mediante `docker.sock`; solicitará y eliminará instancias mediante el SDK de OCI. Docker Compose queda limitado al desarrollo local.

@@ -2,7 +2,7 @@
 
 ## Estado
 
-Propuesta para implementar y validar antes del despliegue.
+Propuesta para el desarrollo local. En producción, la ejecución se sustituye por OCI Container Instances según `docs/arquitectura-oci.md`.
 
 ## Componentes
 

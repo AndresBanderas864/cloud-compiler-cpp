@@ -14,3 +14,12 @@
 - [x] Implementar editor y terminal.
 - [x] Implementar compilación aislada.
 - [x] Automatizar pruebas y verificaciones de calidad.
+
+## Fase 3: migración PaaS
+
+- [x] Crear imagen `compiler-runner` sin Docker-in-Docker.
+- [x] Crear adaptador OCI Container Instances y puente WebSocket.
+- [ ] Crear VCN/subnet privada y permisos IAM.
+- [ ] Publicar imágenes en OCIR.
+- [ ] Configurar y probar Container Instance web.
+- [ ] Probar creación y eliminación real de runners OCI.
