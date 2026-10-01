@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Editor y terminal temporal para ejecutar C++ en la nube">
+  <title>Cloud Compiler C++</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">LABORATORIO C++ / SESIÓN VOLÁTIL</p>
+        <h1>Cloud Compiler<span>++</span></h1>
+      </div>
+      <div class="status-chip" id="connection-status" aria-live="polite"><i></i> listo</div>
+    </header>
+
+    <section class="workspace" aria-label="Entorno de compilación">
+      <article class="panel editor-panel">
+        <div class="panel-header">
+          <div><span class="panel-index">01</span><h2>IDE</h2></div>
+          <label class="standard-label" for="standard">Estándar
+            <select id="standard" aria-label="Versión del estándar C++">
+              <option value="c++17">C++17</option>
+              <option value="c++20">C++20</option>
+              <option value="c++23">C++23</option>
+            </select>
+          </label>
+        </div>
+        <div class="editor-wrap">
+          <div id="line-numbers" class="line-numbers" aria-hidden="true"></div>
+          <textarea id="code" spellcheck="false" aria-label="Código C++"></textarea>
+        </div>
+        <div class="editor-footer"><span id="char-count">0 caracteres</span><span>sin persistencia</span></div>
+      </article>
+
+      <article class="panel terminal-panel">
+        <div class="panel-header">
+          <div><span class="panel-index">02</span><h2>Terminal</h2></div>
+          <span class="runtime" id="run-status">en espera</span>
+        </div>
+        <div id="output" class="terminal-output" role="log" aria-live="polite" aria-label="Salida de la ejecución"><span class="terminal-placeholder">La salida del compilador aparecerá aquí.</span></div>
+        <div class="stdin-row">
+          <label for="stdin" class="sr-only">Entrada para el programa</label>
+          <input id="stdin" type="text" placeholder="Escribe aquí para enviar a cin…" autocomplete="off">
+          <button id="send-input" class="icon-button" type="button" aria-label="Enviar entrada">↵</button>
+        </div>
+        <div class="terminal-footer"><span>salida máxima: 100 KB</span><button id="clear-output" class="text-button" type="button">limpiar</button></div>
+      </article>
+    </section>
+
+    <footer class="actionbar">
+      <p><strong>Sin cuenta.</strong> El código se borra al cerrar esta página.</p>
+      <div class="actions"><button id="cancel" class="secondary-button" type="button" disabled>Cancelar</button><button id="run" class="run-button" type="button"><span>▶</span> Ejecutar código</button></div>
+    </footer>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

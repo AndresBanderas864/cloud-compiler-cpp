@@ -80,3 +80,7 @@ Esta separación permite cambiar Docker, el proveedor cloud o la interfaz sin me
 - Cierre no detectado: TTL de seguridad en el backend.
 - Saturación: rechazo controlado al alcanzar diez usuarios, sin cola.
 - Filtración de datos: no guardar código, resultados, secretos ni logs con el contenido completo.
+
+## Nota de desarrollo local
+
+El `docker-compose.yml` monta el socket de Docker únicamente para facilitar el desarrollo local. Ese montaje otorga privilegios elevados al proceso web y no debe trasladarse sin revisión a producción. En Oracle Cloud se deberá usar Docker rootless, un runtime dedicado o un servicio de sandbox con permisos mínimos.

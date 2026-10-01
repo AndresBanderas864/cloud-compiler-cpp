@@ -10,7 +10,7 @@
 
 ## Fase 2: producto
 
-- [ ] Diseñar arquitectura por capas y límites de seguridad.
+- [x] Diseñar arquitectura por capas y límites de seguridad.
 - [ ] Implementar editor y terminal.
 - [ ] Implementar compilación aislada.
 - [ ] Automatizar pruebas y verificaciones de calidad.

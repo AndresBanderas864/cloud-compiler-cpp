@@ -10,3 +10,5 @@ Fecha: 2026-10-01
 - Revisión de accesibilidad y responsive: requisitos iniciales registrados en `RNF-003`; se validarán durante el prototipo.
 - Revisión de requisitos: se registraron estándares C++17/C++20/C++23, sesiones volátiles, entrada estándar interactiva, Oracle Cloud y capacidad para cinco usuarios simultáneos normalmente y diez como máximo previsto.
 - Entrevista y validación: se registró la respuesta `U-PO-01` y el alcance quedó aprobado con cambios por el responsable del producto; aún falta revisión técnica y QA.
+- Pruebas del primer esqueleto: `python -m pytest -q` pasó con 3 pruebas; `python -m compileall -q app tests` pasó correctamente.
+- Verificación de integración: Docker está instalado, pero el daemon de Docker Desktop no estaba iniciado; la compilación y ejecución real en sandbox quedan pendientes.

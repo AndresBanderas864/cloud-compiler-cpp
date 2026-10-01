@@ -31,3 +31,23 @@ El servicio debe priorizar una experiencia rápida y comprensible, sin ejecutar 
 - Seguridad por defecto para compilación y ejecución remotas.
 - Accesibilidad y diseño responsive desde el MVP.
 - Requisitos trazables a criterios de aceptación y pruebas.
+
+## Ejecutar localmente
+
+Requisitos: Python 3.11+, Docker y Docker Compose.
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate       # Windows PowerShell
+pip install -r requirements.txt
+docker build -t cloud-compiler-sandbox:latest .
+uvicorn app.main:app --reload
+```
+
+Abrir `http://localhost:8000`. El backend no ejecuta C++ directamente en Python: cada trabajo se envía al sandbox Docker con red deshabilitada y límites de recursos.
+
+Para ejecutar las pruebas de validación:
+
+```bash
+python -m pytest -q
+```
