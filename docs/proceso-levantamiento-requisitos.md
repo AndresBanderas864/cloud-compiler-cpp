@@ -89,7 +89,7 @@ Las siguientes decisiones ya fueron propuestas para el MVP:
 
 - No hay cuenta de Oracle Cloud actualmente.
 - Se elegirá la región disponible más cercana a los usuarios objetivo.
-- El máximo esperado es de diez usuarios simultáneos; el número de ejecuciones simultáneas queda pendiente de aclaración.
+- Se esperan cinco usuarios simultáneos en condiciones normales y hasta diez en el peor caso previsto.
 - No habrá cola; las solicitudes adicionales se rechazarán temporalmente.
 - Los cinco minutos incluyen compilación y ejecución.
 - Se estima entre 50 MB y 150 MB de RAM por compilación, aproximadamente 1 vCPU y entre 100 KB y 500 KB de almacenamiento temporal.
@@ -102,6 +102,5 @@ Las siguientes decisiones ya fueron propuestas para el MVP:
 1. Definir el límite máximo de salida de la terminal.
 2. Definir cuánto tiempo conservará el backend una sesión abandonada antes de limpiarla.
 3. Confirmar la región de Oracle Cloud cuando se conozca la ubicación de los usuarios objetivo.
-4. Confirmar si se acepta que una ejecución nueva sea rechazada cuando se alcance el límite de trabajos activos.
-5. Aclarar si “5 máximo” se refiere al tamaño del código, al número de ejecuciones simultáneas o a otro límite.
-6. Confirmar los límites exactos de CPU y memoria del sandbox, usando las estimaciones anteriores como punto de partida.
+4. Confirmar si cada usuario podrá tener una sola ejecución activa o varias simultáneas.
+5. Confirmar los límites exactos de CPU y memoria del sandbox, usando las estimaciones anteriores como punto de partida.

@@ -26,7 +26,7 @@ Se evaluará Oracle Cloud como proveedor inicial, buscando una configuración gr
 
 ## ADR-007: capacidad inicial del MVP
 
-El alcance académico se dimensionará inicialmente para hasta diez usuarios simultáneos y no tendrá cola. El límite exacto de ejecuciones simultáneas queda pendiente de confirmación. Cuando se alcance ese límite, el backend rechazará temporalmente nuevas solicitudes. La región de Oracle Cloud será la disponible más cercana a los usuarios objetivo.
+El alcance académico se dimensionará para cinco usuarios simultáneos en condiciones normales y hasta diez en el peor caso previsto. No tendrá cola: cuando se alcance el máximo de diez usuarios, el backend rechazará temporalmente nuevas solicitudes. La región de Oracle Cloud será la disponible más cercana a los usuarios objetivo.
 
 ## ADR-008: entrada estándar interactiva
 

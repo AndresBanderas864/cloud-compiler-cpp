@@ -100,7 +100,7 @@ El despliegue inicial se evaluará sobre Oracle Cloud, priorizando servicios gra
 
 ### RNF-008 — Capacidad concurrente
 
-El MVP se dimensionará inicialmente para hasta diez usuarios simultáneos. El número máximo de ejecuciones simultáneas queda pendiente de confirmar; si se alcanza el límite definido, una nueva solicitud se rechazará con un mensaje claro y no se utilizará cola.
+El MVP se dimensionará para cinco usuarios simultáneos en condiciones normales y hasta diez en el peor caso previsto. Si se alcanza el límite máximo, una nueva solicitud se rechazará con un mensaje claro y no se utilizará cola.
 
 ### RNF-009 — Recursos por ejecución
 
