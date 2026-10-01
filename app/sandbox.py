@@ -29,7 +29,7 @@ async def run_in_sandbox(
         workspace = Path(temp_dir)
         (workspace / "main.cpp").write_text(request.code, encoding="utf-8")
         flag = {"c++17": "-std=c++17", "c++20": "-std=c++20", "c++23": "-std=c++23"}[request.standard]
-        command = f"g++ {flag} -O0 -Wall -Wextra /workspace/main.cpp -o /workspace/main 2>&1 && exec /workspace/main"
+        command = f"g++ {flag} -O0 -Wall -Wextra /workspace/main.cpp -o /tmp/main 2>&1 && exec /tmp/main"
         process = await asyncio.create_subprocess_exec(
             "docker", "run", "--rm", "-i",
             "--network", "none",
@@ -37,8 +37,8 @@ async def run_in_sandbox(
             "--cpus", "1",
             "--pids-limit", "64",
             "--read-only",
-            "--tmpfs", "/tmp:rw,noexec,nosuid,size=64m",
-            "-v", f"{workspace}:/workspace:rw",
+            "--tmpfs", "/tmp:rw,nosuid,size=64m",
+            "-v", f"{workspace}:/workspace:ro",
             "cloud-compiler-sandbox:latest",
             "sh", "-c", command,
             stdin=asyncio.subprocess.PIPE,
