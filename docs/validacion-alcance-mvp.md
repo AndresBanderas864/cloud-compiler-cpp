@@ -35,23 +35,23 @@ Confirmar que el MVP sea suficientemente pequeño para la tarea y que cubra el f
 
 ## Lista de aprobación
 
-- [ ] El problema está descrito con evidencia de entrevistas.
-- [ ] Los actores y escenarios principales están identificados.
-- [ ] Cada requisito tiene criterio de aceptación.
-- [ ] El alcance no incluye persistencia, cuentas ni colaboración.
-- [ ] La ejecución aislada y los límites de recursos son obligatorios.
-- [ ] Se definió qué ocurre al alcanzar diez usuarios simultáneos.
-- [ ] Se definió el comportamiento ante cierre de página.
-- [ ] Se registraron requisitos fuera del MVP.
-- [ ] Producto, técnica y QA aprobaron la línea base.
+- [x] El problema está descrito con evidencia de la entrevista del responsable del producto.
+- [x] Los actores y escenarios principales están identificados.
+- [ ] Cada requisito tiene criterio de aceptación; falta completar los requisitos no funcionales.
+- [x] El alcance no incluye persistencia, cuentas ni colaboración.
+- [x] La ejecución aislada y los límites de recursos son obligatorios.
+- [x] Se definió qué ocurre al alcanzar diez usuarios simultáneos.
+- [x] Se definió el comportamiento ante cierre de página.
+- [x] Se registraron requisitos fuera del MVP.
+- [ ] Producto, técnica y QA aprobaron la línea base; falta revisión técnica y QA.
 
 ## Acta
 
 | Campo | Registro |
 |---|---|
-| Fecha | AAAA-MM-DD |
-| Participantes | |
-| Decisión | aprobado / aprobado con cambios / rechazado |
-| Cambios acordados | |
-| Requisitos afectados | |
-| Próxima revisión | |
+| Fecha | 2026-10-01 |
+| Participantes | Responsable del producto |
+| Decisión | aprobado con cambios |
+| Cambios acordados | Editor sencillo con Hola Mundo y numeración; selección C++17/C++20/C++23; terminal interactiva; límite de salida de 100 KB; mensajes de error simplificados con identificador. |
+| Requisitos afectados | RF-001, RF-003, RF-005, RF-008, RNF-006, RNF-011 |
+| Próxima revisión | Después del diseño de arquitectura y seguridad |

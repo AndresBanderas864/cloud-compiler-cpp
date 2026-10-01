@@ -70,3 +70,17 @@ No se deben registrar nombres completos ni código personal. Usar un identificad
 - No convertir una preferencia aislada en requisito obligatorio.
 - Considerar repetido un hallazgo cuando aparezca en al menos dos entrevistas o cuando represente un riesgo de seguridad o accesibilidad.
 - Actualizar el catálogo solo después de revisar las respuestas.
+
+## Registro completado: U-PO-01
+
+| Campo | Registro |
+|---|---|
+| Identificador | `U-PO-01` |
+| Perfil | Usuario principiante y avanzado; conoce bien C++ |
+| Fecha | 2026-10-01 |
+| Hallazgos principales | Necesita copiar código de clase y ejecutarlo rápidamente desde la web, sin usar el compilador de los computadores de la universidad. |
+| Problemas repetidos | Instalación o uso de compiladores locales en equipos universitarios. |
+| Necesidades nuevas | Selector de C++17/C++20/C++23 modificable, terminal interactiva para `cin`, editor sencillo con numeración y Hola Mundo, errores simplificados con identificador. |
+| Requisitos afectados | RF-001, RF-003, RF-005, RF-008, RNF-006, RNF-011 |
+| Evidencia textual breve | “Quiero copiar el código que hice en clase y ejecutarlo rápidamente en una web”. |
+| Decisión | validado por responsable del producto; pendiente de revisión técnica y QA |

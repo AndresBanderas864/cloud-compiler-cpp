@@ -9,3 +9,4 @@ Fecha: 2026-10-01
 - Revisión de seguridad: el alcance documenta aislamiento, límites de recursos y ausencia de acceso innecesario a red, host y secretos.
 - Revisión de accesibilidad y responsive: requisitos iniciales registrados en `RNF-003`; se validarán durante el prototipo.
 - Revisión de requisitos: se registraron estándares C++17/C++20/C++23, sesiones volátiles, entrada estándar interactiva, Oracle Cloud y capacidad para cinco usuarios simultáneos normalmente y diez como máximo previsto.
+- Entrevista y validación: se registró la respuesta `U-PO-01` y el alcance quedó aprobado con cambios por el responsable del producto; aún falta revisión técnica y QA.

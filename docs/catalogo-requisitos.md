@@ -8,8 +8,8 @@ Este documento contiene hipótesis iniciales. Ningún requisito queda aprobado h
 
 - **Actor:** usuario.
 - **Prioridad:** Must.
-- **Descripción:** el sistema debe permitir escribir o pegar código C++ en el apartado IDE.
-- **Criterio:** Dado que el usuario está en la pantalla principal, cuando escriba código en el editor, entonces el contenido debe permanecer visible y editable.
+- **Descripción:** el sistema debe permitir escribir o pegar código C++ en un editor sencillo, con numeración de líneas y un programa de Hola Mundo precargado.
+- **Criterio:** Dado que el usuario está en la pantalla principal, cuando escriba o pegue código en el editor, entonces el contenido debe permanecer visible, editable y mostrar su numeración de líneas.
 - **Estado:** propuesto.
 
 ### RF-002 — Solicitar compilación y ejecución
@@ -24,8 +24,8 @@ Este documento contiene hipótesis iniciales. Ningún requisito queda aprobado h
 
 - **Actor:** usuario.
 - **Prioridad:** Must.
-- **Descripción:** el apartado terminal debe mostrar la salida del programa o los errores de compilación.
-- **Criterio:** Dado que finalizó el trabajo, cuando haya salida o error, entonces la terminal debe mostrar el resultado diferenciando estado exitoso y fallido.
+- **Descripción:** el apartado terminal debe mostrar la salida del programa, los errores de compilación o los errores de ejecución con mensajes simplificados y el identificador del error.
+- **Criterio:** Dado que finalizó el trabajo, cuando haya salida o error, entonces la terminal debe mostrar el resultado diferenciando estado exitoso y fallido, junto con el identificador del error cuando corresponda.
 - **Estado:** propuesto.
 
 ### RF-004 — Cancelar ejecución
@@ -41,15 +41,15 @@ Este documento contiene hipótesis iniciales. Ningún requisito queda aprobado h
 - **Actor:** usuario.
 - **Prioridad:** Must.
 - **Descripción:** el sistema debe permitir compilar y ejecutar código usando C++17, C++20 o C++23.
-- **Criterio:** Dado que el usuario tiene código en el editor, cuando seleccione una de las tres versiones soportadas y ejecute, entonces el trabajo debe usar esa versión del estándar.
+- **Criterio:** Dado que el usuario tiene código en el editor, cuando seleccione o cambie entre C++17, C++20 y C++23 y ejecute, entonces el trabajo debe usar la versión seleccionada.
 - **Estado:** propuesto.
 
 ### RF-006 — Proporcionar entrada estándar
 
 - **Actor:** usuario.
 - **Prioridad:** Must.
-- **Descripción:** el usuario debe poder proporcionar datos de entrada estándar para programas que utilicen `cin`.
-- **Criterio:** Dado que el programa lee entrada estándar, cuando el usuario proporcione datos y ejecute, entonces el proceso debe recibirlos y la terminal debe mostrar el resultado.
+- **Descripción:** el usuario debe poder proporcionar datos de entrada estándar desde la terminal interactiva para programas que utilicen `cin`.
+- **Criterio:** Dado que el programa lee entrada estándar, cuando el usuario escriba datos en la terminal y presione Enter, entonces el proceso debe recibirlos y continuar la ejecución.
 - **Estado:** propuesto.
 
 ### RF-007 — Eliminar la sesión volátil
@@ -92,7 +92,7 @@ El usuario debe poder utilizar el MVP sin registrarse ni iniciar sesión.
 
 ### RNF-006 — Tiempo máximo de ejecución
 
-La ejecución de cada programa debe finalizar, ser cancelada o marcarse como excedida al alcanzar cinco minutos. El tiempo máximo de compilación y las excepciones deberán definirse con la infraestructura.
+La compilación y ejecución de cada programa deben finalizar, ser canceladas o marcarse como excedidas al alcanzar cinco minutos.
 
 ### RNF-007 — Infraestructura inicial
 
@@ -112,4 +112,4 @@ El código, binario, entrada y resultados se almacenarán únicamente de forma t
 
 ### RNF-011 — Límites de comunicación
 
-La solución deberá considerar como referencia entre 15 KB y 30 KB de tráfico por ejecución, una carga inicial aproximada de 1.5 MB y un límite explícito para la salida de la terminal.
+La solución deberá considerar como referencia entre 15 KB y 30 KB de tráfico por ejecución, una carga inicial aproximada de 1.5 MB y un límite máximo de 100 KB para la salida de la terminal.
