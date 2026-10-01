@@ -74,18 +74,25 @@ class OciContainerInstanceProvisioner:
             graceful_shutdown_timeout_in_seconds=5,
         )
         instance = client.create_container_instance(details).data
-        deadline = time.monotonic() + 120
-        while time.monotonic() < deadline:
-            current = client.get_container_instance(instance.id).data
-            if current.lifecycle_state == "ACTIVE":
-                if not current.vnics or not current.vnics[0].private_ip:
-                    raise OciConfigurationError("OCI no devolvió una IP privada para el runner.")
-                ip = current.vnics[0].private_ip
-                return RunnerEndpoint(instance.id, f"ws://{ip}:{self.port}/ws/run?token={quote(token)}", token)
-            if current.lifecycle_state == "FAILED":
-                raise OciConfigurationError("OCI no pudo iniciar el runner efímero.")
-            time.sleep(2)
-        raise OciConfigurationError("OCI agotó el tiempo de inicio del runner.")
+        try:
+            deadline = time.monotonic() + 120
+            while time.monotonic() < deadline:
+                current = client.get_container_instance(instance.id).data
+                if current.lifecycle_state == "ACTIVE":
+                    if not current.vnics or not current.vnics[0].private_ip:
+                        raise OciConfigurationError("OCI no devolvió una IP privada para el runner.")
+                    ip = current.vnics[0].private_ip
+                    return RunnerEndpoint(instance.id, f"ws://{ip}:{self.port}/ws/run?token={quote(token)}", token)
+                if current.lifecycle_state == "FAILED":
+                    raise OciConfigurationError("OCI no pudo iniciar el runner efímero.")
+                time.sleep(2)
+            raise OciConfigurationError("OCI agotó el tiempo de inicio del runner.")
+        except Exception:
+            try:
+                client.delete_container_instance(instance.id)
+            except Exception:
+                pass
+            raise
 
     def _delete(self, instance_id: str) -> None:
         self._client().delete_container_instance(instance_id)
