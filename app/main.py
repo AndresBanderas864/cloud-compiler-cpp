@@ -11,6 +11,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from .providers.oci_container_instances import OciConfigurationError
 from .sandbox import SandboxUnavailable, run_in_sandbox
 from .validation import MAX_CONCURRENT_USERS, ValidationError, validate_run_request
 
@@ -79,7 +80,7 @@ async def run_socket(websocket: WebSocket) -> None:
         except (WebSocketDisconnect, json.JSONDecodeError):
             await input_queue.put("__CANCEL__")
 
-    receiver = asyncio.create_task(receive_input())
+    receiver: asyncio.Task[None] | None = None
     try:
         await status("iniciando")
         if os.getenv("EXECUTION_BACKEND", "local") == "oci":
@@ -87,13 +88,17 @@ async def run_socket(websocket: WebSocket) -> None:
 
             await run_via_oci(request, websocket)
         else:
+            receiver = asyncio.create_task(receive_input())
             await run_in_sandbox(request, output, input_queue, status)
+    except OciConfigurationError as error:
+        await send_error(websocket, "CC-902", str(error))
     except SandboxUnavailable as error:
         await send_error(websocket, "CC-901", str(error))
     except (WebSocketDisconnect, RuntimeError):
         pass
     finally:
-        receiver.cancel()
+        if receiver:
+            receiver.cancel()
         async with active_runs_lock:
             active_runs -= 1
         try:
