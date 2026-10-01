@@ -29,7 +29,7 @@ async def run_in_sandbox(
         workspace = Path(temp_dir)
         (workspace / "main.cpp").write_text(request.code, encoding="utf-8")
         flag = {"c++17": "-std=c++17", "c++20": "-std=c++20", "c++23": "-std=c++23"}[request.standard]
-        command = f"g++ {flag} -O0 -Wall -Wextra /workspace/main.cpp -o /tmp/main 2>&1 && exec /tmp/main"
+        command = f"g++ {flag} -O0 -Wall -Wextra /workspace/main.cpp -o /tmp/main 2>&1 || {{ printf '\\n[CC-006] Error de compilacion.\\n'; exit 42; }}; exec /tmp/main"
         process = await asyncio.create_subprocess_exec(
             "docker", "run", "--rm", "-i",
             "--network", "none",
@@ -37,7 +37,7 @@ async def run_in_sandbox(
             "--cpus", "1",
             "--pids-limit", "64",
             "--read-only",
-            "--tmpfs", "/tmp:rw,nosuid,size=64m",
+            "--tmpfs", "/tmp:rw,exec,nosuid,size=64m",
             "-v", f"{workspace}:/workspace:ro",
             "cloud-compiler-sandbox:latest",
             "sh", "-c", command,
@@ -78,10 +78,13 @@ async def run_in_sandbox(
             await asyncio.wait_for(process.wait(), timeout=MAX_RUNTIME_SECONDS)
             if process.returncode == 0:
                 await on_status("finalizado")
+            elif process.returncode == 42:
+                await on_status("error")
             elif process.returncode < 0:
                 await on_output("\n[CC-005] La ejecución fue cancelada o terminó por un límite.\n")
                 await on_status("cancelado")
             else:
+                await on_output("\n[CC-007] Error de ejecución.\n")
                 await on_status("error")
         except asyncio.TimeoutError:
             process.kill()

@@ -12,3 +12,4 @@ Fecha: 2026-10-01
 - Entrevista y validación: se registró la respuesta `U-PO-01` y el alcance quedó aprobado con cambios por el responsable del producto; aún falta revisión técnica y QA.
 - Pruebas del primer esqueleto: `python -m pytest -q` pasó con 3 pruebas; `python -m compileall -q app tests` pasó correctamente.
 - Verificación de integración: Docker está instalado, pero el daemon de Docker Desktop no estaba iniciado; la compilación y ejecución real en sandbox quedan pendientes.
+- Verificación de integración posterior: se construyó `cloud-compiler-sandbox:latest`; WebSocket ejecutó correctamente un programa con `cin` en C++17 y confirmó salida en C++17, C++20 y C++23. También se confirmó un error de compilación con identificador `CC-006`.
