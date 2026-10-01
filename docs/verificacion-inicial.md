@@ -13,3 +13,4 @@ Fecha: 2026-10-01
 - Pruebas del primer esqueleto: `python -m pytest -q` pasó con 3 pruebas; `python -m compileall -q app tests` pasó correctamente.
 - Verificación de integración: Docker está instalado, pero el daemon de Docker Desktop no estaba iniciado; la compilación y ejecución real en sandbox quedan pendientes.
 - Verificación de integración posterior: se construyó `cloud-compiler-sandbox:latest`; WebSocket ejecutó correctamente un programa con `cin` en C++17 y confirmó salida en C++17, C++20 y C++23. También se confirmó un error de compilación con identificador `CC-006`.
+- Verificación Docker Compose: se corrigió la imagen web separándola de la imagen del compilador; `docker compose build`, `docker compose up -d`, `/api/health`, ejecución interactiva en C++23 y error de compilación funcionaron correctamente.

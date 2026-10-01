@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -25,11 +26,26 @@ async def run_in_sandbox(
     if shutil.which("docker") is None:
         raise SandboxUnavailable("CC-901: Docker no está disponible en este servidor.")
 
-    with tempfile.TemporaryDirectory(prefix="cloud-compiler-") as temp_dir:
+    volume_name = os.getenv("SANDBOX_VOLUME")
+    workspace_root = os.getenv("SANDBOX_WORKSPACE_ROOT") if volume_name else None
+    temp_kwargs = {"prefix": "cloud-compiler-"}
+    if workspace_root:
+        temp_kwargs["dir"] = workspace_root
+    with tempfile.TemporaryDirectory(**temp_kwargs) as temp_dir:
         workspace = Path(temp_dir)
-        (workspace / "main.cpp").write_text(request.code, encoding="utf-8")
+        source_file = workspace / "main.cpp"
+        source_file.write_text(request.code, encoding="utf-8")
+        if volume_name:
+            os.chmod(workspace, 0o755)
+            os.chmod(source_file, 0o644)
         flag = {"c++17": "-std=c++17", "c++20": "-std=c++20", "c++23": "-std=c++23"}[request.standard]
-        command = f"g++ {flag} -O0 -Wall -Wextra /workspace/main.cpp -o /tmp/main 2>&1 || {{ printf '\\n[CC-006] Error de compilacion.\\n'; exit 42; }}; exec /tmp/main"
+        if volume_name:
+            source_path = f"/sandbox/{workspace.name}/main.cpp"
+            volume_args = ["-v", f"{volume_name}:/sandbox:ro"]
+        else:
+            source_path = "/workspace/main.cpp"
+            volume_args = ["-v", f"{workspace}:/workspace:ro"]
+        command = f"g++ {flag} -O0 -Wall -Wextra {source_path} -o /tmp/main 2>&1 || {{ printf '\\n[CC-006] Error de compilacion.\\n'; exit 42; }}; exec /tmp/main"
         process = await asyncio.create_subprocess_exec(
             "docker", "run", "--rm", "-i",
             "--network", "none",
@@ -38,7 +54,7 @@ async def run_in_sandbox(
             "--pids-limit", "64",
             "--read-only",
             "--tmpfs", "/tmp:rw,exec,nosuid,size=64m",
-            "-v", f"{workspace}:/workspace:ro",
+            *volume_args,
             "cloud-compiler-sandbox:latest",
             "sh", "-c", command,
             stdin=asyncio.subprocess.PIPE,

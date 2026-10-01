@@ -1,10 +1,18 @@
 services:
   web:
-    build: .
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    build:
+      context: .
+      dockerfile: Dockerfile.web
     ports:
       - "8000:8000"
+    environment:
+      SANDBOX_VOLUME: cloud-compiler-cpp-sandbox-workspaces
+      SANDBOX_WORKSPACE_ROOT: /sandbox-workspaces
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - .:/app
-    working_dir: /app
+      - .:/app:ro
+      - sandbox-workspaces:/sandbox-workspaces
+
+volumes:
+  sandbox-workspaces:
+    name: cloud-compiler-cpp-sandbox-workspaces
