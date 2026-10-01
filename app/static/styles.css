@@ -20,7 +20,7 @@ h2 { font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; margin:0; 
 .standard-label { color:var(--muted); font:500 .65rem var(--mono); text-transform:uppercase; display:flex; gap:10px; align-items:center; }
 select { border:1px solid var(--line); background:var(--surface-2); color:var(--acid); padding:8px 10px; font:500 .75rem var(--mono); }
 .editor-wrap { display:grid; grid-template-columns:46px 1fr; height:445px; overflow:hidden; background:#151817; }
-.line-numbers { color:#56605b; font:400 .78rem/1.7 var(--mono); text-align:right; padding:17px 12px 17px 0; user-select:none; overflow:hidden; }
+.line-numbers { color:#56605b; font:400 .78rem/1.7 var(--mono); text-align:right; white-space:pre; padding:17px 12px 17px 0; user-select:none; overflow:hidden; }
 textarea { width:100%; height:100%; resize:none; border:0; outline:0; padding:17px 18px; background:transparent; color:#d9e7d9; font:400 .78rem/1.7 var(--mono); tab-size:2; white-space:pre; overflow:auto; }
 .editor-footer,.terminal-footer { padding:11px 16px; color:var(--muted); font:400 .65rem var(--mono); }
 .terminal-output { height:445px; padding:20px; overflow:auto; color:#cfe1d1; font:400 .8rem/1.7 var(--mono); white-space:pre-wrap; word-break:break-word; }
