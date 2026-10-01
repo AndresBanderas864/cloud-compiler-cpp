@@ -85,15 +85,23 @@ Las siguientes decisiones ya fueron propuestas para el MVP:
 - Sesiones sin autenticación y sin persistencia de código.
 - Evaluación de Oracle Cloud como proveedor inicial.
 
-### Preguntas de infraestructura para decidir
+### Respuestas registradas
 
-1. ¿El proyecto tiene una cuenta Oracle Cloud creada y con verificación de pago, aunque se utilice el nivel gratuito?
-2. ¿En qué región debería desplegarse el servicio y qué latencia máxima sería aceptable para el usuario?
-3. ¿Qué tamaño aproximado de código y salida debe soportar cada ejecución?
-4. ¿Cuántas ejecuciones simultáneas esperamos en una primera demostración?
-5. ¿Aceptamos una cola cuando se alcance el límite de ejecuciones simultáneas?
-6. ¿El límite de cinco minutos incluye solo la ejecución del binario o también compilación, preparación y entrega de resultados?
-7. ¿Qué memoria y CPU mínimas debe recibir cada trabajo?
-8. ¿La entrada estándar se proporcionará completa antes de ejecutar o debe poder escribirse mientras el programa corre?
-9. ¿Qué comportamiento debe tener una sesión abandonada si el cierre de la página no puede detectarse de manera confiable?
-10. ¿Se aceptan pausas o suspensión del servicio cuando Oracle Cloud no tenga capacidad gratuita disponible?
+- No hay cuenta de Oracle Cloud actualmente.
+- Se elegirá la región disponible más cercana a los usuarios objetivo.
+- El máximo esperado es de diez usuarios simultáneos; el número de ejecuciones simultáneas queda pendiente de aclaración.
+- No habrá cola; las solicitudes adicionales se rechazarán temporalmente.
+- Los cinco minutos incluyen compilación y ejecución.
+- Se estima entre 50 MB y 150 MB de RAM por compilación, aproximadamente 1 vCPU y entre 100 KB y 500 KB de almacenamiento temporal.
+- La entrada estándar podrá enviarse durante la ejecución.
+- Si la página se cierra, el código se perderá y no será recuperable.
+- Se consideran como referencias entre 15 KB y 30 KB de tráfico por ejecución y una carga inicial aproximada de 1.5 MB.
+
+### Decisiones aún necesarias
+
+1. Definir el límite máximo de salida de la terminal.
+2. Definir cuánto tiempo conservará el backend una sesión abandonada antes de limpiarla.
+3. Confirmar la región de Oracle Cloud cuando se conozca la ubicación de los usuarios objetivo.
+4. Confirmar si se acepta que una ejecución nueva sea rechazada cuando se alcance el límite de trabajos activos.
+5. Aclarar si “5 máximo” se refiere al tamaño del código, al número de ejecuciones simultáneas o a otro límite.
+6. Confirmar los límites exactos de CPU y memoria del sandbox, usando las estimaciones anteriores como punto de partida.

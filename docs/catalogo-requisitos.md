@@ -60,6 +60,14 @@ Este documento contiene hipótesis iniciales. Ningún requisito queda aprobado h
 - **Criterio:** Dado que existe una sesión activa, cuando el usuario cierre la página, entonces el sistema debe invalidar la sesión y eliminar los datos temporales asociados dentro del plazo definido.
 - **Estado:** propuesto; requiere definir detección de cierre y plazo de limpieza.
 
+### RF-008 — Enviar entrada estándar durante la ejecución
+
+- **Actor:** usuario.
+- **Prioridad:** Must.
+- **Descripción:** el usuario debe poder enviar datos a la entrada estándar mientras el programa está ejecutándose.
+- **Criterio:** Dado que el programa está esperando datos en `cin`, cuando el usuario escriba y envíe una entrada, entonces el proceso debe recibirla y la terminal debe continuar mostrando el resultado.
+- **Estado:** propuesto; requiere canal bidireccional entre navegador y backend.
+
 ## Requisitos no funcionales iniciales
 
 ### RNF-001 — Aislamiento de ejecución
@@ -88,4 +96,20 @@ La ejecución de cada programa debe finalizar, ser cancelada o marcarse como exc
 
 ### RNF-007 — Infraestructura inicial
 
-El despliegue inicial se evaluará sobre Oracle Cloud, priorizando servicios gratuitos o de costo cero compatibles con el presupuesto del proyecto.
+El despliegue inicial se evaluará sobre Oracle Cloud, priorizando servicios gratuitos o de costo cero compatibles con el presupuesto del proyecto. La región será la disponible más cercana a los usuarios objetivo.
+
+### RNF-008 — Capacidad concurrente
+
+El MVP se dimensionará inicialmente para hasta diez usuarios simultáneos. El número máximo de ejecuciones simultáneas queda pendiente de confirmar; si se alcanza el límite definido, una nueva solicitud se rechazará con un mensaje claro y no se utilizará cola.
+
+### RNF-009 — Recursos por ejecución
+
+Como referencia inicial, cada trabajo podrá requerir entre 50 MB y 150 MB de RAM durante la compilación, aproximadamente 1 vCPU y entre 100 KB y 500 KB de almacenamiento temporal. Estos valores deberán convertirse en límites del sandbox y validarse durante la implementación.
+
+### RNF-010 — Datos temporales y limpieza
+
+El código, binario, entrada y resultados se almacenarán únicamente de forma temporal en memoria o almacenamiento efímero. Al cerrar o abandonar la página, los datos deberán eliminarse; el backend también debe aplicar una expiración de seguridad cuando no pueda detectar el cierre.
+
+### RNF-011 — Límites de comunicación
+
+La solución deberá considerar como referencia entre 15 KB y 30 KB de tráfico por ejecución, una carga inicial aproximada de 1.5 MB y un límite explícito para la salida de la terminal.

@@ -23,3 +23,15 @@ El MVP no tendrá registro ni inicio de sesión. El código, la entrada y los re
 ## ADR-006: proveedor cloud inicial
 
 Se evaluará Oracle Cloud como proveedor inicial, buscando una configuración gratuita o sin costo para el proyecto académico. La decisión final dependerá de límites, disponibilidad regional y capacidad para aislar ejecuciones no confiables.
+
+## ADR-007: capacidad inicial del MVP
+
+El alcance académico se dimensionará inicialmente para hasta diez usuarios simultáneos y no tendrá cola. El límite exacto de ejecuciones simultáneas queda pendiente de confirmación. Cuando se alcance ese límite, el backend rechazará temporalmente nuevas solicitudes. La región de Oracle Cloud será la disponible más cercana a los usuarios objetivo.
+
+## ADR-008: entrada estándar interactiva
+
+La entrada estándar podrá enviarse durante la ejecución, no únicamente antes de iniciarla. La interfaz deberá proporcionar un control de entrada y el backend un canal bidireccional; esta decisión puede aumentar la complejidad frente a una solicitud HTTP única.
+
+## ADR-009: estimaciones de consumo
+
+Para dimensionar el prototipo se utilizarán como referencias 15–30 KB de tráfico por ejecución, 1.5 MB de carga inicial, 50–150 MB de RAM por compilación, aproximadamente 1 vCPU y 100–500 KB de almacenamiento temporal por trabajo. Son estimaciones, no garantías de capacidad.
