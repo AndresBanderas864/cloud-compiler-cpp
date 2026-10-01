@@ -77,10 +77,23 @@ Usar MoSCoW y revisar la prioridad con producto y técnica:
 
 ## 9. Preguntas pendientes
 
-1. ¿Se requiere entrada estándar interactiva en el MVP?
-2. ¿Qué versión de C++ se soportará primero?
-3. ¿Cuál es el tiempo máximo aceptable para compilar y ejecutar?
-4. ¿Se permitirá guardar código entre sesiones?
-5. ¿El usuario deberá autenticarse?
-6. ¿Qué límites de tamaño, memoria, CPU y duración tendrá cada ejecución?
-7. ¿Qué proveedor cloud y presupuesto están disponibles?
+Las siguientes decisiones ya fueron propuestas para el MVP:
+
+- Soporte para C++17, C++20 y C++23.
+- Entrada estándar para programas que utilicen `cin`.
+- Tiempo máximo de ejecución de cinco minutos.
+- Sesiones sin autenticación y sin persistencia de código.
+- Evaluación de Oracle Cloud como proveedor inicial.
+
+### Preguntas de infraestructura para decidir
+
+1. ¿El proyecto tiene una cuenta Oracle Cloud creada y con verificación de pago, aunque se utilice el nivel gratuito?
+2. ¿En qué región debería desplegarse el servicio y qué latencia máxima sería aceptable para el usuario?
+3. ¿Qué tamaño aproximado de código y salida debe soportar cada ejecución?
+4. ¿Cuántas ejecuciones simultáneas esperamos en una primera demostración?
+5. ¿Aceptamos una cola cuando se alcance el límite de ejecuciones simultáneas?
+6. ¿El límite de cinco minutos incluye solo la ejecución del binario o también compilación, preparación y entrega de resultados?
+7. ¿Qué memoria y CPU mínimas debe recibir cada trabajo?
+8. ¿La entrada estándar se proporcionará completa antes de ejecutar o debe poder escribirse mientras el programa corre?
+9. ¿Qué comportamiento debe tener una sesión abandonada si el cierre de la página no puede detectarse de manera confiable?
+10. ¿Se aceptan pausas o suspensión del servicio cuando Oracle Cloud no tenga capacidad gratuita disponible?

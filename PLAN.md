@@ -10,4 +10,4 @@
 
 ## Alcance inicial
 
-El MVP permitirá escribir código C++, solicitar su compilación y visualizar la salida o los errores en una interfaz con dos apartados: IDE y terminal.
+El MVP permitirá escribir código C++, elegir C++17, C++20 o C++23, proporcionar entrada estándar cuando sea necesario, solicitar su compilación y visualizar la salida o los errores en una interfaz con dos apartados: IDE y terminal. No requerirá autenticación ni guardará proyectos.
