@@ -83,12 +83,12 @@ Las siguientes decisiones ya fueron propuestas para el MVP:
 - Entrada estándar para programas que utilicen `cin`.
 - Tiempo máximo de ejecución de cinco minutos.
 - Sesiones sin autenticación y sin persistencia de código.
-- Evaluación de Oracle Cloud como proveedor inicial.
+- Evaluación de AWS ECS Fargate como proveedor inicial.
 
 ### Respuestas registradas
 
-- No hay cuenta de Oracle Cloud actualmente.
-- Se elegirá la región disponible más cercana a los usuarios objetivo.
+- El proyecto AWS está disponible en la región seleccionada `us-east-2`.
+- ECS Fargate se eligió para tareas web y runners efímeros.
 - Se esperan cinco usuarios simultáneos en condiciones normales y hasta diez en el peor caso previsto.
 - No habrá cola; las solicitudes adicionales se rechazarán temporalmente.
 - Los cinco minutos incluyen compilación y ejecución.
@@ -101,6 +101,6 @@ Las siguientes decisiones ya fueron propuestas para el MVP:
 
 1. Definir el límite máximo de salida de la terminal.
 2. Definir cuánto tiempo conservará el backend una sesión abandonada antes de limpiarla.
-3. Confirmar la región de Oracle Cloud cuando se conozca la ubicación de los usuarios objetivo.
+3. Confirmar la región seleccionada de AWS con el responsable del proyecto.
 4. Confirmar si cada usuario podrá tener una sola ejecución activa o varias simultáneas.
 5. Confirmar los límites exactos de CPU y memoria del sandbox, usando las estimaciones anteriores como punto de partida.

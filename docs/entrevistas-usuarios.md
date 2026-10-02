@@ -83,4 +83,4 @@ No se deben registrar nombres completos ni código personal. Usar un identificad
 | Necesidades nuevas | Selector de C++17/C++20/C++23 modificable, terminal interactiva para `cin`, editor sencillo con numeración y Hola Mundo, errores simplificados con identificador. |
 | Requisitos afectados | RF-001, RF-003, RF-005, RF-008, RNF-006, RNF-011 |
 | Evidencia textual breve | “Quiero copiar el código que hice en clase y ejecutarlo rápidamente en una web”. |
-| Decisión | validado por responsable del producto; pendiente de revisión técnica y QA |
+| Decisión | validado por responsable del producto; revisión técnica ejecutada mediante pruebas AWS; pendiente de aprobación formal de QA |

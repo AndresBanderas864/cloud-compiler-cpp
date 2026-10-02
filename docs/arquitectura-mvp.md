@@ -2,7 +2,7 @@
 
 ## Estado
 
-Propuesta para el desarrollo local. En producción, la ejecución se sustituye por tareas ECS Fargate según `docs/arquitectura-aws.md`.
+Arquitectura del desarrollo local. En AWS, la aplicación web y los runners se ejecutan en ECS Fargate según `docs/arquitectura-aws.md`.
 
 ## Componentes
 
@@ -34,9 +34,9 @@ Sandbox efímero por trabajo
 - **Comunicación:** HTTP para crear trabajos y WebSocket para salida e `stdin` interactivos.
 - **Sandbox:** contenedor efímero con Docker y usuario sin privilegios.
 - **Compilador:** toolchain con `g++` y banderas `-std=c++17`, `-std=c++20` o `-std=c++23`.
-- **Despliegue:** máquina virtual de Oracle Cloud; la región se elegirá según cercanía y disponibilidad.
+- **Despliegue:** Amazon ECS Fargate en `us-east-2`; la infraestructura se define en `infra/cloudformation.yaml`.
 
-Estas tecnologías son una propuesta de bajo costo y baja complejidad para el proyecto académico, no una decisión irreversible.
+Docker Compose queda limitado al desarrollo local. El despliegue PaaS usa tareas Fargate efímeras y un Application Load Balancer.
 
 ## Flujo de ejecución
 
@@ -60,7 +60,7 @@ Estas tecnologías son una propuesta de bajo costo y baja complejidad para el pr
 | Persistencia | Ninguna |
 | Acceso de red del sandbox | Denegado |
 
-La memoria y CPU se configurarán después de probar el entorno de Oracle Cloud; las estimaciones actuales son 50–150 MB de RAM y aproximadamente 1 vCPU por trabajo.
+La tarea runner usa inicialmente 1 vCPU y 2 GB de memoria Fargate; los límites internos del proceso mantienen las restricciones del MVP.
 
 ## Responsabilidades por capa
 
@@ -84,4 +84,4 @@ Esta separación permite cambiar Docker, el proveedor cloud o la interfaz sin me
 
 ## Nota de desarrollo local
 
-El `docker-compose.yml` monta el socket de Docker únicamente para facilitar el desarrollo local. Ese montaje otorga privilegios elevados al proceso web y no debe trasladarse sin revisión a producción. En Oracle Cloud se deberá usar Docker rootless, un runtime dedicado o un servicio de sandbox con permisos mínimos.
+El `docker-compose.yml` monta el socket de Docker únicamente para facilitar el desarrollo local. Ese montaje otorga privilegios elevados al proceso web y no debe trasladarse a producción. En AWS se usa ECS Fargate y la imagen web de producción no incluye ni monta `docker.sock`.

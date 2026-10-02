@@ -8,7 +8,7 @@ Ejecutar la aplicación web y cada compilación en tareas Fargate separadas, sin
 
 ```text
 Navegador
-   │ HTTPS/WebSocket
+   │ HTTP/WebSocket (HTTPS pendiente de dominio y ACM)
    ▼
 Application Load Balancer
    ▼

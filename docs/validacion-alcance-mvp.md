@@ -1,6 +1,6 @@
 # Validación del alcance del MVP
 
-Este taller corresponde al paso de validar y aprobar el alcance después de las entrevistas. No debe marcarse como aprobado hasta obtener respuestas reales y revisar los riesgos técnicos.
+Este taller corresponde al paso de validar y aprobar el alcance después de las entrevistas. El prototipo y el despliegue temporal ya permiten revisar el flujo real; la aprobación final de producto y QA sigue siendo una actividad pendiente.
 
 ## Objetivo
 
@@ -43,7 +43,7 @@ Confirmar que el MVP sea suficientemente pequeño para la tarea y que cubra el f
 - [x] Se definió qué ocurre al alcanzar diez usuarios simultáneos.
 - [x] Se definió el comportamiento ante cierre de página.
 - [x] Se registraron requisitos fuera del MVP.
-- [ ] Producto, técnica y QA aprobaron la línea base; falta revisión técnica y QA.
+- [ ] Producto, técnica y QA aprobaron la línea base; falta la aprobación formal de producto y QA.
 
 ## Acta
 
@@ -54,4 +54,4 @@ Confirmar que el MVP sea suficientemente pequeño para la tarea y que cubra el f
 | Decisión | aprobado con cambios |
 | Cambios acordados | Editor sencillo con Hola Mundo y numeración; selección C++17/C++20/C++23; terminal interactiva; límite de salida de 100 KB; mensajes de error simplificados con identificador. |
 | Requisitos afectados | RF-001, RF-003, RF-005, RF-008, RNF-006, RNF-011 |
-| Próxima revisión | Después del diseño de arquitectura y seguridad |
+| Próxima revisión | Después de la evaluación del despliegue AWS y la revisión formal de QA |

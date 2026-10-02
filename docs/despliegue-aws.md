@@ -48,7 +48,7 @@ Usa tags inmutables por versión en producción y activa el escaneo de imágenes
 2. Asócialo a un Application Load Balancer.
 3. Usa un target group en el puerto `8000`.
 4. Configura el health check en `/api/health`.
-5. Publica HTTPS; no expongas el puerto `8001`.
+5. El stack temporal publica HTTP para la revisión; para producción debe añadirse HTTPS con dominio y certificado ACM. No expongas el puerto `8001`.
 
 ## Verificación
 

@@ -2,9 +2,17 @@
 
 PaaS educativo para escribir, compilar y ejecutar programas pequeños de C++ desde la nube.
 
-## Estado
+## Estado actual
 
-En fase de levantamiento y validación de requisitos.
+MVP desplegado temporalmente en AWS ECS Fargate, región `us-east-2`.
+
+- Aplicación web en ECS Fargate detrás de un Application Load Balancer.
+- Runners efímeros privados creados con `RunTask` y detenidos con `StopTask`.
+- Imágenes privadas en Amazon ECR.
+- WebSocket interactivo probado con C++20, `cin` y salida correcta.
+- Repositorio público: <https://github.com/AndresBanderas864/cloud-compiler-cpp>
+
+El entorno AWS se mantiene solo para evaluación. Después de la revisión, debe eliminarse con las instrucciones de [despliegue y limpieza](docs/despliegue-aws.md#eliminar-el-entorno-temporal).
 
 ## Visión del MVP
 
@@ -26,6 +34,8 @@ El servicio debe priorizar una experiencia rápida y comprensible, sin ejecutar 
 - [Catálogo inicial de requisitos](docs/catalogo-requisitos.md)
 - [Plan del proyecto](PLAN.md)
 - [Decisiones](DECISIONS.md)
+- [Tareas](TASKS.md)
+- [Verificación inicial](docs/verificacion-inicial.md)
 
 ## Principios
 
@@ -38,18 +48,21 @@ El servicio debe priorizar una experiencia rápida y comprensible, sin ejecutar 
 
 Requisitos: Python 3.11+, Docker y Docker Compose.
 
-```bash
+```powershell
 python -m venv .venv
 .venv\Scripts\activate       # Windows PowerShell
 pip install -r requirements.txt
-docker build -t cloud-compiler-sandbox:latest .
-uvicorn app.main:app --reload
+docker compose up --build
 ```
 
-Abrir `http://localhost:8000`. El backend no ejecuta C++ directamente en Python: cada trabajo se envía al sandbox Docker con red deshabilitada y límites de recursos.
+Abrir `http://localhost:8000`. En local, Docker Compose usa `docker.sock` únicamente para crear el sandbox; este flujo no se utiliza en AWS.
 
 Para ejecutar las pruebas de validación:
 
 ```bash
 python -m pytest -q
 ```
+
+## Limpieza AWS
+
+El stack temporal incluye NAT Gateway, ALB, ECS y CloudWatch Logs. Elimina el stack y los repositorios ECR después de la evaluación; los pasos reproducibles están en [despliegue-aws.md](docs/despliegue-aws.md#eliminar-el-entorno-temporal).

@@ -2,7 +2,7 @@
 
 ## ADR-001: repositorio independiente
 
-El compilador se desarrollará en un repositorio nuevo y privado, separado de proyectos existentes para evitar mezclar dominios, dependencias y documentación.
+El compilador se desarrollará en un repositorio independiente, separado de proyectos existentes para evitar mezclar dominios, dependencias y documentación. El repositorio es público para facilitar la revisión académica; no se deben almacenar secretos.
 
 ## ADR-002: alcance del MVP
 
@@ -22,11 +22,11 @@ El MVP no tendrá registro ni inicio de sesión. El código, la entrada y los re
 
 ## ADR-006: proveedor cloud inicial
 
-Se evaluará Oracle Cloud como proveedor inicial, buscando una configuración gratuita o sin costo para el proyecto académico. La decisión final dependerá de límites, disponibilidad regional y capacidad para aislar ejecuciones no confiables.
+Se usará Amazon Web Services como proveedor inicial, con ECS Fargate en la región seleccionada `us-east-2`. La elección prioriza tareas efímeras, aislamiento de runners y compatibilidad con WebSockets. El entorno de evaluación se eliminará después de la revisión para evitar costes.
 
 ## ADR-007: capacidad inicial del MVP
 
-El alcance académico se dimensionará para cinco usuarios simultáneos en condiciones normales y hasta diez en el peor caso previsto. No tendrá cola: cuando se alcance el máximo de diez usuarios, el backend rechazará temporalmente nuevas solicitudes. La región de Oracle Cloud será la disponible más cercana a los usuarios objetivo.
+El alcance académico se dimensionará para cinco usuarios simultáneos en condiciones normales y hasta diez en el peor caso previsto. No tendrá cola: cuando se alcance el máximo de diez usuarios, el backend rechazará temporalmente nuevas solicitudes. La región seleccionada de AWS es `us-east-2`.
 
 ## ADR-008: entrada estándar interactiva
 

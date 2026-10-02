@@ -1,6 +1,6 @@
 # Catálogo inicial de requisitos
 
-Este documento contiene hipótesis iniciales. Ningún requisito queda aprobado hasta completar el proceso de validación.
+Este documento contiene la línea base funcional y no funcional del MVP. La validación de producto y QA debe continuar para cerrar los requisitos todavía marcados como propuestos.
 
 ## Requisitos funcionales
 
@@ -96,7 +96,7 @@ La compilación y ejecución de cada programa deben finalizar, ser canceladas o 
 
 ### RNF-007 — Infraestructura inicial
 
-El despliegue inicial se evaluará sobre Oracle Cloud, priorizando servicios gratuitos o de costo cero compatibles con el presupuesto del proyecto. La región será la disponible más cercana a los usuarios objetivo.
+El despliegue inicial se evaluará sobre AWS ECS Fargate en la región seleccionada `us-east-2`, priorizando tareas efímeras, aislamiento de runners y limpieza reproducible del entorno temporal.
 
 ### RNF-008 — Capacidad concurrente
 
