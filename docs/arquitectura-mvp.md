@@ -2,7 +2,7 @@
 
 ## Estado
 
-Propuesta para el desarrollo local. En producción, la ejecución se sustituye por OCI Container Instances según `docs/arquitectura-oci.md`.
+Propuesta para el desarrollo local. En producción, la ejecución se sustituye por tareas ECS Fargate según `docs/arquitectura-aws.md`.
 
 ## Componentes
 

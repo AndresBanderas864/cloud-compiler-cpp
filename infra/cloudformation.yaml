@@ -1,0 +1,381 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Infraestructura temporal del PaaS Cloud Compiler C++ en ECS Fargate:
+  red privada con NAT, runners efímeros, servicio web, ALB, IAM, ECR logs y
+  recursos etiquetados para poder eliminar el entorno tras la evaluación.
+Metadata:
+  AWSToolsMetrics:
+    AWSAgentToolkit: aws-cloudformation@3
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet::Id
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet::Id
+  RunnerImage:
+    Type: String
+  WebImage:
+    Type: String
+
+Resources:
+  NatEip:
+    Type: AWS::EC2::EIP
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Egress controlado para que las tareas privadas descarguen imágenes y dependencias.
+        must: Debe eliminarse junto con el NAT para detener costes.
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+        - Key: ManagedBy
+          Value: cloudformation
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Permite salida de las subnets privadas sin asignar IP pública a runners.
+        must: Mantenerlo solo durante la evaluación; es un recurso con coste.
+    Properties:
+      AllocationId: !GetAtt NatEip.AllocationId
+      SubnetId: !Ref PublicSubnetA
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+        - Key: ManagedBy
+          Value: cloudformation
+
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      AvailabilityZone: us-east-2a
+      CidrBlock: 172.31.48.0/20
+      Tags:
+        - Key: Name
+          Value: cloud-compiler-private-a
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      AvailabilityZone: us-east-2b
+      CidrBlock: 172.31.64.0/20
+      Tags:
+        - Key: Name
+          Value: cloud-compiler-private-b
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Name
+          Value: cloud-compiler-private
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    DependsOn: NatGateway
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  PrivateSubnetRouteA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetA
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateSubnetRouteB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetB
+      RouteTableId: !Ref PrivateRouteTable
+
+  AlbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Public HTTP access for the temporary Cloud Compiler ALB.
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  WebSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Web ECS tasks reachable only from the ALB.
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          SourceSecurityGroupId: !Ref AlbSecurityGroup
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  RunnerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Ephemeral compiler runners reachable only from web tasks.
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8001
+          ToPort: 8001
+          SourceSecurityGroupId: !Ref WebSecurityGroup
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  EcsExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  RunnerTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  WebTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: RunCompilerTasks
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecs:RunTask
+                  - ecs:StopTask
+                  - ecs:DescribeTasks
+                Resource: '*'
+              - Effect: Allow
+                Action: ec2:DescribeNetworkInterfaces
+                Resource: '*'
+              - Effect: Allow
+                Action: iam:PassRole
+                Resource:
+                  - !GetAtt EcsExecutionRole.Arn
+                  - !GetAtt RunnerTaskRole.Arn
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  WebLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/cloud-compiler-web
+      RetentionInDays: 3
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  RunnerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/cloud-compiler-runner
+      RetentionInDays: 3
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: cloud-compiler-cluster
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  RunnerTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: cloud-compiler-runner
+      Cpu: '1024'
+      Memory: '2048'
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn: !GetAtt EcsExecutionRole.Arn
+      TaskRoleArn: !GetAtt RunnerTaskRole.Arn
+      ContainerDefinitions:
+        - Name: compiler-runner
+          Image: !Ref RunnerImage
+          Essential: true
+          PortMappings:
+            - ContainerPort: 8001
+              Protocol: tcp
+          User: '10001'
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref RunnerLogGroup
+              awslogs-region: us-east-2
+              awslogs-stream-prefix: runner
+
+  WebTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: cloud-compiler-web
+      Cpu: '1024'
+      Memory: '2048'
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn: !GetAtt EcsExecutionRole.Arn
+      TaskRoleArn: !GetAtt WebTaskRole.Arn
+      ContainerDefinitions:
+        - Name: web
+          Image: !Ref WebImage
+          Essential: true
+          PortMappings:
+            - ContainerPort: 8000
+              Protocol: tcp
+          Environment:
+            - Name: EXECUTION_BACKEND
+              Value: ecs
+            - Name: AWS_REGION
+              Value: us-east-2
+            - Name: ECS_CLUSTER
+              Value: !Ref Cluster
+            - Name: ECS_RUNNER_TASK_DEFINITION
+              Value: !Ref RunnerTaskDefinition
+            - Name: ECS_RUNNER_SUBNET_IDS
+              Value: !Join [',', [!Ref PrivateSubnetA, !Ref PrivateSubnetB]]
+            - Name: ECS_RUNNER_SECURITY_GROUP
+              Value: !Ref RunnerSecurityGroup
+            - Name: ECS_RUNNER_CONTAINER_NAME
+              Value: compiler-runner
+            - Name: ECS_RUNNER_PORT
+              Value: '8001'
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref WebLogGroup
+              awslogs-region: us-east-2
+              awslogs-stream-prefix: web
+
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      Type: application
+      Subnets:
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetB
+      SecurityGroups:
+        - !Ref AlbSecurityGroup
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 8000
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcId
+      HealthCheckPath: /api/health
+      HealthCheckProtocol: HTTP
+      Matcher:
+        HttpCode: '200'
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+  HttpListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+
+  WebService:
+    Type: AWS::ECS::Service
+    DependsOn: HttpListener
+    Properties:
+      Cluster: !Ref Cluster
+      ServiceName: cloud-compiler-web
+      LaunchType: FARGATE
+      DesiredCount: 1
+      TaskDefinition: !Ref WebTaskDefinition
+      HealthCheckGracePeriodSeconds: 60
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          Subnets:
+            - !Ref PrivateSubnetA
+            - !Ref PrivateSubnetB
+          SecurityGroups:
+            - !Ref WebSecurityGroup
+      LoadBalancers:
+        - ContainerName: web
+          ContainerPort: 8000
+          TargetGroupArn: !Ref TargetGroup
+      Tags:
+        - Key: Project
+          Value: cloud-compiler-cpp
+
+Outputs:
+  ApplicationUrl:
+    Description: Temporary HTTP endpoint for professor verification.
+    Value: !Sub http://${LoadBalancer.DNSName}
+  ClusterName:
+    Value: !Ref Cluster
+  RunnerTaskDefinition:
+    Value: !Ref RunnerTaskDefinition
+  PrivateSubnetIds:
+    Value: !Join [',', [!Ref PrivateSubnetA, !Ref PrivateSubnetB]]
+  RunnerSecurityGroupId:
+    Value: !Ref RunnerSecurityGroup

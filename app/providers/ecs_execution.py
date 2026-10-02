@@ -1,4 +1,4 @@
-"""Puente WebSocket entre el navegador y un runner OCI privado."""
+"""Puente WebSocket entre el navegador y un runner ECS privado."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ import websockets
 from fastapi import WebSocket
 
 from ..validation import RunRequest
-from .oci_container_instances import OciContainerInstanceProvisioner
+from .ecs_fargate import EcsFargateProvisioner
 
 
-async def run_via_oci(request: RunRequest, browser: WebSocket) -> None:
-    provisioner = OciContainerInstanceProvisioner()
+async def run_via_ecs(request: RunRequest, browser: WebSocket) -> None:
+    provisioner = EcsFargateProvisioner()
     await browser.send_json({"type": "status", "value": "creando runner"})
     endpoint = await provisioner.create()
     try:
@@ -38,4 +38,4 @@ async def run_via_oci(request: RunRequest, browser: WebSocket) -> None:
                 if task.exception() and not isinstance(task.exception(), asyncio.CancelledError):
                     raise task.exception()
     finally:
-        await provisioner.delete(endpoint.instance_id)
+        await provisioner.delete(endpoint.task_arn)

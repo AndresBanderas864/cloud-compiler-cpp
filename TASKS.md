@@ -15,11 +15,12 @@
 - [x] Implementar compilación aislada.
 - [x] Automatizar pruebas y verificaciones de calidad.
 
-## Fase 3: migración PaaS
+## Fase 3: migración PaaS a AWS
 
 - [x] Crear imagen `compiler-runner` sin Docker-in-Docker.
-- [x] Crear adaptador OCI Container Instances y puente WebSocket.
-- [ ] Crear VCN/subnet privada y permisos IAM.
-- [ ] Publicar imágenes en OCIR.
-- [ ] Configurar y probar Container Instance web.
-- [ ] Probar creación y eliminación real de runners OCI.
+- [x] Crear adaptador ECS Fargate y puente WebSocket.
+- [x] Crear VPC/subnets privadas, NAT y Security Groups.
+- [x] Crear repositorios ECR y publicar imágenes.
+- [x] Crear roles IAM y task definitions.
+- [x] Configurar y probar el servicio web con ALB.
+- [x] Probar creación y detención real de runners Fargate.

@@ -11,7 +11,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from .providers.oci_container_instances import OciConfigurationError
+from .providers.ecs_fargate import EcsConfigurationError
 from .sandbox import SandboxUnavailable, run_in_sandbox
 from .validation import MAX_CONCURRENT_USERS, ValidationError, validate_run_request
 
@@ -83,14 +83,14 @@ async def run_socket(websocket: WebSocket) -> None:
     receiver: asyncio.Task[None] | None = None
     try:
         await status("iniciando")
-        if os.getenv("EXECUTION_BACKEND", "local") == "oci":
-            from .providers.oci_execution import run_via_oci
+        if os.getenv("EXECUTION_BACKEND", "local") == "ecs":
+            from .providers.ecs_execution import run_via_ecs
 
-            await run_via_oci(request, websocket)
+            await run_via_ecs(request, websocket)
         else:
             receiver = asyncio.create_task(receive_input())
             await run_in_sandbox(request, output, input_queue, status)
-    except OciConfigurationError as error:
+    except EcsConfigurationError as error:
         await send_error(websocket, "CC-902", str(error))
     except SandboxUnavailable as error:
         await send_error(websocket, "CC-901", str(error))
