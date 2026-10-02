@@ -61,3 +61,16 @@ Usa tags inmutables por versión en producción y activa el escaneo de imágenes
 7. Revisa CloudWatch Logs y ECR sin exponer código ni tokens.
 
 Docker Compose queda reservado para desarrollo local y conserva su flujo con `docker.sock` únicamente en ese entorno.
+
+## Eliminar el entorno temporal
+
+Después de la revisión del profesor, elimina primero el stack porque el NAT Gateway, el ALB y Fargate generan costes mientras existan:
+
+```powershell
+aws cloudformation delete-stack --stack-name cloud-compiler-cpp-paas --region us-east-2 --profile Blastbeat
+aws cloudformation wait stack-delete-complete --stack-name cloud-compiler-cpp-paas --region us-east-2 --profile Blastbeat
+aws ecr delete-repository --repository-name cloud-compiler-web --force --region us-east-2 --profile Blastbeat
+aws ecr delete-repository --repository-name cloud-compiler-runner --force --region us-east-2 --profile Blastbeat
+```
+
+Confirma en AWS Settings > Billing que no queden recursos activos. La cuenta del proyecto tiene créditos limitados; no mantengas el stack después de la evaluación.
