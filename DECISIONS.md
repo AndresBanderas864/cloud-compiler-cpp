@@ -22,7 +22,7 @@ El MVP no tendrá registro ni inicio de sesión. El código, la entrada y los re
 
 ## ADR-006: proveedor cloud inicial
 
-Se usará Amazon Web Services como proveedor inicial, con ECS Fargate en la región seleccionada `us-east-2`. La elección prioriza tareas efímeras, aislamiento de runners y compatibilidad con WebSockets. El entorno de evaluación se eliminará después de la revisión para evitar costes.
+Se usará Amazon Web Services como proveedor inicial, con ECS Fargate en la región seleccionada `us-east-2`. La elección prioriza tareas efímeras, aislamiento de runners y compatibilidad con WebSockets. El entorno de evaluación se elimina después de la revisión para evitar costes.
 
 ## ADR-007: capacidad inicial del MVP
 

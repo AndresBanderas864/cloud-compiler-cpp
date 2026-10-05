@@ -4,15 +4,15 @@ PaaS educativo para escribir, compilar y ejecutar programas pequeños de C++ des
 
 ## Estado actual
 
-MVP desplegado temporalmente en AWS ECS Fargate, región `us-east-2`.
+MVP validado mediante un despliegue temporal en AWS ECS Fargate, región `us-east-2`.
 
 - Aplicación web en ECS Fargate detrás de un Application Load Balancer.
 - Runners efímeros privados creados con `RunTask` y detenidos con `StopTask`.
-- Imágenes privadas en Amazon ECR.
+- Imágenes privadas publicadas temporalmente en Amazon ECR.
 - WebSocket interactivo probado con C++20, `cin` y salida correcta.
 - Repositorio público: <https://github.com/AndresBanderas864/cloud-compiler-cpp>
 
-El entorno AWS se mantiene solo para evaluación. Después de la revisión, debe eliminarse con las instrucciones de [despliegue y limpieza](docs/despliegue-aws.md#eliminar-el-entorno-temporal).
+La evaluación del profesor ya terminó y el entorno AWS fue eliminado para evitar costes. La URL temporal ya no está disponible; puede recrearse siguiendo [despliegue y limpieza](docs/despliegue-aws.md).
 
 ## Visión del MVP
 
@@ -65,4 +65,4 @@ python -m pytest -q
 
 ## Limpieza AWS
 
-El stack temporal incluye NAT Gateway, ALB, ECS y CloudWatch Logs. Elimina el stack y los repositorios ECR después de la evaluación; los pasos reproducibles están en [despliegue-aws.md](docs/despliegue-aws.md#eliminar-el-entorno-temporal).
+El stack temporal que incluía NAT Gateway, ALB, ECS, CloudWatch Logs y ECR fue eliminado después de la evaluación. Los pasos reproducibles para crear y eliminar otro entorno están en [despliegue-aws.md](docs/despliegue-aws.md#eliminar-el-entorno-temporal).

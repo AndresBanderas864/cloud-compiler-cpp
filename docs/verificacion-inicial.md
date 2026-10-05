@@ -26,9 +26,9 @@ Fecha de actualización: 2026-10-02
 ## Verificación AWS
 
 - Región: `us-east-2`.
-- Stack: `cloud-compiler-cpp-paas`, estado `UPDATE_COMPLETE`.
-- ECS Service web: `1/1` tareas en ejecución y estado `ACTIVE`.
-- `/api/health` público temporal: respondió 200.
+- Stack temporal: `cloud-compiler-cpp-paas`, alcanzó `UPDATE_COMPLETE` y luego fue eliminado.
+- ECS Service web: llegó a `1/1` tareas en ejecución y estado `ACTIVE` durante la evaluación.
+- `/api/health` público temporal: respondió 200 durante la evaluación.
 - WebSocket real: creó un runner Fargate, compiló C++20, recibió entrada `4`, devolvió `5` y finalizó correctamente.
 - El runner probado pasó a estado `STOPPED`.
 
@@ -36,4 +36,4 @@ Fecha de actualización: 2026-10-02
 
 - El endpoint temporal usa HTTP, no HTTPS, porque aún no se configuró dominio ni certificado ACM.
 - No hay autenticación ni persistencia, conforme al alcance del MVP.
-- El stack incluye NAT Gateway, ALB y Fargate; debe eliminarse después de la evaluación para evitar costes.
+- El stack, NAT Gateway, ALB, Fargate y repositorios ECR fueron eliminados después de la evaluación para evitar costes.

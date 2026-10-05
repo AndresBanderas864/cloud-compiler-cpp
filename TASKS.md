@@ -24,3 +24,4 @@
 - [x] Crear roles IAM y task definitions.
 - [x] Configurar y probar el servicio web con ALB.
 - [x] Probar creación y detención real de runners Fargate.
+- [x] Eliminar el entorno AWS temporal después de la revisión académica.

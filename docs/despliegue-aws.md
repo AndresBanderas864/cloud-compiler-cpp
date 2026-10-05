@@ -64,7 +64,7 @@ Docker Compose queda reservado para desarrollo local y conserva su flujo con `do
 
 ## Eliminar el entorno temporal
 
-Después de la revisión del profesor, elimina primero el stack porque el NAT Gateway, el ALB y Fargate generan costes mientras existan:
+Después de la revisión del profesor, elimina primero el stack porque el NAT Gateway, el ALB y Fargate generan costes mientras existan. Estos pasos ya se ejecutaron para la entrega actual:
 
 ```powershell
 aws cloudformation delete-stack --stack-name cloud-compiler-cpp-paas --region us-east-2 --profile Blastbeat
